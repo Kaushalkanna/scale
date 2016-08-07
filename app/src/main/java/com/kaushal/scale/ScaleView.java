@@ -32,7 +32,6 @@ public class ScaleView extends View {
     private int scaleLineMedium;
     private int scaleLineLarge;
     private int textStartPoint;
-    private int yellowLineStrokeWidth;
     boolean isFirstTime = true;
 
     public ScaleView(Context context, AttributeSet foo) {
@@ -43,7 +42,7 @@ public class ScaleView extends View {
     }
 
     private void init(Context context) {
-        yellowLineStrokeWidth = (int) getResources().getDimension(R.dimen.yellow_line_stroke_width);
+        int yellowLineStrokeWidth = (int) getResources().getDimension(R.dimen.yellow_line_stroke_width);
         gradientPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         rulersize = pxmm * 10;
         rulerPaint = new Paint();
