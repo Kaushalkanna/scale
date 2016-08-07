@@ -11,8 +11,8 @@ public class ScaleActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scale);
-        final ScaleView rulerViewMm = (ScaleView) findViewById(R.id.my_scale);
-        txtValue = (TextView) findViewById(R.id.txt_height);
+        final ScaleView rulerViewMm = (ScaleView) findViewById(R.id.scale);
+        txtValue = (TextView) findViewById(R.id.length_text);
         rulerViewMm.setStartingPoint(0);
         rulerViewMm.setUpdateListener(new onViewUpdateListener() {
             @Override

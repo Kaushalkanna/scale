@@ -3,7 +3,6 @@ package com.kaushal.scale;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextPaint;
@@ -22,9 +21,7 @@ public class ScaleView extends View {
     boolean isUpward = false;
     private boolean isMove;
     private onViewUpdateListener mListener;
-    private Paint gradientPaint;
-    private float rulersize = 0;
-    private Paint rulerPaint, textPaint, indicatePointer;
+    private Paint scaleSpec, scaleTextSpec;
     private int endPoint;
     boolean isSizeChanged = false;
     float userStartingPoint = 0f;
@@ -42,33 +39,33 @@ public class ScaleView extends View {
     }
 
     private void init(Context context) {
-        gradientPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        rulersize = pxmm * 10;
-        rulerPaint = new Paint();
-        rulerPaint.setStyle(Paint.Style.STROKE);
-        rulerPaint.setStrokeWidth(0);
-        rulerPaint.setAntiAlias(false);
-        rulerPaint.setColor(Color.WHITE);
-        textPaint = new TextPaint();
+        setScaleSpec();
+        setScaleTextSpec(context);
+
+
+    }
+
+    private void setScaleTextSpec(Context context) {
+        scaleTextSpec = new TextPaint();
         Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/segoeuil.ttf");
-        textPaint.setTypeface(typeface);
-        textPaint.setStyle(Paint.Style.STROKE);
-        textPaint.setStrokeWidth(0);
-        textPaint.setAntiAlias(true);
-        textPaint.setTextSize(getResources().getDimension(R.dimen.txt_size));
-        textPaint.setColor(Color.WHITE);
-        indicatePointer = new Paint();
-        indicatePointer.setStyle(Paint.Style.FILL_AND_STROKE);
-        indicatePointer.setColor(Color.RED);
-        indicatePointer.setStrokeWidth(2);
-        indicatePointer.setStrokeJoin(Paint.Join.ROUND);
-        indicatePointer.setStrokeCap(Paint.Cap.ROUND);
-        indicatePointer.setPathEffect(new CornerPathEffect(10));
-        indicatePointer.setAntiAlias(true);
+        scaleTextSpec.setTypeface(typeface);
+        scaleTextSpec.setStyle(Paint.Style.STROKE);
+        scaleTextSpec.setStrokeWidth(0);
+        scaleTextSpec.setAntiAlias(true);
+        scaleTextSpec.setTextSize(getResources().getDimension(R.dimen.txt_size));
+        scaleTextSpec.setColor(Color.BLACK);
+        textStartPoint = (int) getResources().getDimension(R.dimen.text_start_point);
+    }
+
+    private void setScaleSpec() {
+        scaleSpec = new Paint();
+        scaleSpec.setStyle(Paint.Style.STROKE);
+        scaleSpec.setStrokeWidth(1);
+        scaleSpec.setAntiAlias(false);
+        scaleSpec.setColor(Color.BLACK);
         scaleLineSmall = (int) getResources().getDimension(R.dimen.scale_line_small);
         scaleLineMedium = (int) getResources().getDimension(R.dimen.scale_line_medium);
         scaleLineLarge = (int) getResources().getDimension(R.dimen.scale_line_large);
-        textStartPoint = (int) getResources().getDimension(R.dimen.text_start_point);
     }
 
     public void setUpdateListener(onViewUpdateListener onViewUpdateListener) {
@@ -91,7 +88,6 @@ public class ScaleView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        canvas.drawRect(0f, midScreenPoint - (rulersize / 2), width, midScreenPoint + (rulersize / 2), gradientPaint);
         startingPoint = mainPoint;
         for (int i = 1;; ++i) {
             if (startingPoint > screenSize) {
@@ -99,13 +95,12 @@ public class ScaleView extends View {
             }
             startingPoint = startingPoint + pxmm;
             int size = (i % 10 == 0) ? scaleLineLarge : (i % 5 == 0) ? scaleLineMedium : scaleLineSmall;
-            canvas.drawLine(endPoint - size, startingPoint, endPoint, startingPoint, rulerPaint);
+            canvas.drawLine(endPoint - size, startingPoint, endPoint, startingPoint, scaleSpec);
             if (i % 10 == 0) {
                 System.out.println("done   " + i);
-                canvas.drawText((i / 10) + " cm", endPoint - textStartPoint, startingPoint + 8, textPaint);
+                canvas.drawText((i / 10) + " cm", endPoint - textStartPoint, startingPoint + 8, scaleTextSpec);
             }
         }
-        canvas.drawLine(0f, midScreenPoint, width - 20, midScreenPoint, indicatePointer);
     }
 
     @Override
