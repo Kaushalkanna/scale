@@ -13,7 +13,7 @@ public class ScaleActivity extends Activity {
         setContentView(R.layout.scale);
         final ScaleView rulerViewMm = (ScaleView) findViewById(R.id.my_scale);
         txtValue = (TextView) findViewById(R.id.txt_height);
-        rulerViewMm.setStartingPoint(1);
+        rulerViewMm.setStartingPoint(0);
         rulerViewMm.setUpdateListener(new onViewUpdateListener() {
             @Override
             public void onViewUpdate(float result) {

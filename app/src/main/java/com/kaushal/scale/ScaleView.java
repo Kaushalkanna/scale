@@ -61,7 +61,7 @@ public class ScaleView extends View {
         textPaint.setColor(Color.WHITE);
         goldenPaint = new Paint();
         goldenPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        goldenPaint.setColor(context.getResources().getColor(R.color.yellow));
+        goldenPaint.setColor(context.getResources().getColor(R.color.transparent_white));
         goldenPaint.setStrokeWidth(yellowLineStrokeWidth);
         goldenPaint.setStrokeJoin(Paint.Join.ROUND);
         goldenPaint.setStrokeCap(Paint.Cap.ROUND);
