@@ -24,7 +24,7 @@ public class ScaleView extends View {
     private onViewUpdateListener mListener;
     private Paint gradientPaint;
     private float rulersize = 0;
-    private Paint rulerPaint, textPaint, goldenPaint;
+    private Paint rulerPaint, textPaint, indicatePointer;
     private int endPoint;
     boolean isSizeChanged = false;
     float userStartingPoint = 0f;
@@ -42,7 +42,6 @@ public class ScaleView extends View {
     }
 
     private void init(Context context) {
-        int yellowLineStrokeWidth = (int) getResources().getDimension(R.dimen.yellow_line_stroke_width);
         gradientPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         rulersize = pxmm * 10;
         rulerPaint = new Paint();
@@ -58,14 +57,14 @@ public class ScaleView extends View {
         textPaint.setAntiAlias(true);
         textPaint.setTextSize(getResources().getDimension(R.dimen.txt_size));
         textPaint.setColor(Color.WHITE);
-        goldenPaint = new Paint();
-        goldenPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        goldenPaint.setColor(context.getResources().getColor(R.color.transparent_white));
-        goldenPaint.setStrokeWidth(yellowLineStrokeWidth);
-        goldenPaint.setStrokeJoin(Paint.Join.ROUND);
-        goldenPaint.setStrokeCap(Paint.Cap.ROUND);
-        goldenPaint.setPathEffect(new CornerPathEffect(10));
-        goldenPaint.setAntiAlias(true);
+        indicatePointer = new Paint();
+        indicatePointer.setStyle(Paint.Style.FILL_AND_STROKE);
+        indicatePointer.setColor(Color.RED);
+        indicatePointer.setStrokeWidth(2);
+        indicatePointer.setStrokeJoin(Paint.Join.ROUND);
+        indicatePointer.setStrokeCap(Paint.Cap.ROUND);
+        indicatePointer.setPathEffect(new CornerPathEffect(10));
+        indicatePointer.setAntiAlias(true);
         scaleLineSmall = (int) getResources().getDimension(R.dimen.scale_line_small);
         scaleLineMedium = (int) getResources().getDimension(R.dimen.scale_line_medium);
         scaleLineLarge = (int) getResources().getDimension(R.dimen.scale_line_large);
@@ -106,7 +105,7 @@ public class ScaleView extends View {
                 canvas.drawText((i / 10) + " cm", endPoint - textStartPoint, startingPoint + 8, textPaint);
             }
         }
-        canvas.drawLine(0f, midScreenPoint, width - 20, midScreenPoint, goldenPaint);
+        canvas.drawLine(0f, midScreenPoint, width - 20, midScreenPoint, indicatePointer);
     }
 
     @Override
