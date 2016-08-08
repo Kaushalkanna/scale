@@ -20,9 +20,9 @@ public class ScaleView extends View {
     float downpoint = 0, movablePoint = 0, downPointClone = 0;
     private float mainPoint = 0, mainPointClone = 0;
     boolean isDown = false;
-    boolean isUpward = false;
+    boolean isUp = false;
     private boolean isMove;
-    private onViewUpdateListener mListener;
+    private onViewUpdateListener listener;
     private Paint scaleSpec, scaleTextSpec;
     private int endPoint;
     boolean isSizeChanged = false;
@@ -71,7 +71,7 @@ public class ScaleView extends View {
     }
 
     public void setUpdateListener(onViewUpdateListener onViewUpdateListener) {
-        mListener = onViewUpdateListener;
+        listener = onViewUpdateListener;
     }
 
     @Override
@@ -112,26 +112,26 @@ public class ScaleView extends View {
         if (mainPoint < 0) {
             mainPointClone = -mainPoint;
         }
-        if (mListener != null) {
-            mListener.onViewUpdate((mainPointClone) / (pxmm * 10));
+        if (listener != null) {
+            listener.onViewUpdate((mainPointClone) / (pxmm * 10));
         }
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 isMove = true;
                 isDown = false;
-                isUpward = false;
+                isUp = false;
                 downpoint = event.getY();
                 downPointClone = event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 movablePoint = event.getY();
                 if (downPointClone > movablePoint) {
-                    if (isUpward) {
+                    if (isUp) {
                         downpoint = event.getY();
                         downPointClone = downpoint;
                     }
                     isDown = true;
-                    isUpward = false;
+                    isUp = false;
                     if (downPointClone - movablePoint > 1) {
                         mainPoint = mainPoint + (-(downPointClone - movablePoint));
                         downPointClone = movablePoint;
@@ -144,7 +144,7 @@ public class ScaleView extends View {
                             downPointClone = downpoint;
                         }
                         isDown = false;
-                        isUpward = true;
+                        isUp = true;
                         if (movablePoint - downpoint > 1) {
                             mainPoint = mainPoint + ((movablePoint - downPointClone));
                             downPointClone = movablePoint;
@@ -173,8 +173,8 @@ public class ScaleView extends View {
         isSizeChanged = true;
         if (isFirstTime) {
             isFirstTime = false;
-            if (mListener != null) {
-                mListener.onViewUpdate(point);
+            if (listener != null) {
+                listener.onViewUpdate(point);
             }
         }
     }
