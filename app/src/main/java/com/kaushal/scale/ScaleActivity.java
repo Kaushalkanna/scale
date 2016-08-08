@@ -50,6 +50,7 @@ public class ScaleActivity extends Activity {
             .setMessage("Do you want to exit scale application?")
             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface arg0, int arg1) {
+                    finish();
                 }
             })
             .setNegativeButton("No", new DialogInterface.OnClickListener() {
