@@ -10,7 +10,7 @@ public class ScaleActivity extends Activity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scale);
+        setContentView(R.layout.scale_main);
         final ScaleView rulerViewMm = (ScaleView) findViewById(R.id.scale);
         txtValue = (TextView) findViewById(R.id.length_text);
         rulerViewMm.setStartingPoint(0);

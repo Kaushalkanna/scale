@@ -7,11 +7,12 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class ScaleView extends View {
-    static int screenSize = 480;
+    static int screenSize = 640;
     static private float pxmm = screenSize / 67.f;
     int width, height, midScreenPoint;
     float startingPoint = 0;
@@ -60,7 +61,7 @@ public class ScaleView extends View {
     private void setScaleSpec() {
         scaleSpec = new Paint();
         scaleSpec.setStyle(Paint.Style.STROKE);
-        scaleSpec.setStrokeWidth(1);
+        scaleSpec.setStrokeWidth(4);
         scaleSpec.setAntiAlias(false);
         scaleSpec.setColor(Color.BLACK);
         scaleLineSmall = (int) getResources().getDimension(R.dimen.scale_line_small);
@@ -82,7 +83,7 @@ public class ScaleView extends View {
         endPoint = width - 40;
         if (isSizeChanged) {
             isSizeChanged = false;
-            mainPoint = midScreenPoint - (userStartingPoint * 10 * pxmm);
+            mainPoint = 1;
         }
     }
 
@@ -97,7 +98,6 @@ public class ScaleView extends View {
             int size = (i % 10 == 0) ? scaleLineLarge : (i % 5 == 0) ? scaleLineMedium : scaleLineSmall;
             canvas.drawLine(endPoint - size, startingPoint, endPoint, startingPoint, scaleSpec);
             if (i % 10 == 0) {
-                System.out.println("done   " + i);
                 canvas.drawText((i / 10) + " cm", endPoint - textStartPoint, startingPoint + 8, scaleTextSpec);
             }
         }
@@ -105,16 +105,14 @@ public class ScaleView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        System.out.println("touch event fire");
         mainPointClone = mainPoint;
         if (mainPoint < 0) {
             mainPointClone = -mainPoint;
         }
-        float clickPoint = ((midScreenPoint + mainPointClone) / (pxmm * 10));
+        float clickPoint = ((mainPointClone) / (pxmm * 10));
         if (mListener != null) {
-            mListener.onViewUpdate((midScreenPoint + mainPointClone) / (pxmm * 10));
+            mListener.onViewUpdate((mainPointClone) / (pxmm * 10));
         }
-        System.out.println("click point" + clickPoint + "");
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 isMove = true;
@@ -126,32 +124,19 @@ public class ScaleView extends View {
             case MotionEvent.ACTION_MOVE:
                 movablePoint = event.getY();
                 if (downPointClone > movablePoint) {
-                    /**
-                     * if user first starts moving downward and then upwards then
-                     * this method makes it to move upward
-                     */
                     if (isUpward) {
                         downpoint = event.getY();
                         downPointClone = downpoint;
                     }
                     isDown = true;
                     isUpward = false;
-                    /**
-                     * make this differnce of 1, otherwise it moves very fast and
-                     * nothing shows clearly
-                     */
                     if (downPointClone - movablePoint > 1) {
                         mainPoint = mainPoint + (-(downPointClone - movablePoint));
                         downPointClone = movablePoint;
                         invalidate();
                     }
                 } else {
-                    // downwards
                     if (isMove) {
-                        /**
-                         * if user first starts moving upward and then downwards,
-                         * then this method makes it to move upward
-                         */
                         if (isDown) {
                             downpoint = event.getY();
                             downPointClone = downpoint;
@@ -171,7 +156,7 @@ public class ScaleView extends View {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                System.out.println("up");
+                Log.v("ScaleView", "Action: UP");
             default:
                 break;
         }

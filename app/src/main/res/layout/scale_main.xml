@@ -8,14 +8,18 @@
 
     <TextView
         android:id="@+id/length_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="137dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:layout_gravity="bottom"
+        android:layout_weight="5.15"
+        android:textSize="40sp"
+        android:textAlignment="center" />
 
     <com.kaushal.scale.ScaleView
         android:id="@+id/scale"
-        android:layout_width="match_parent"
+        android:layout_width="216dp"
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:background="@android:color/white" />
