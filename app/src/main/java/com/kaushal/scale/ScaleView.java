@@ -12,8 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class ScaleView extends View {
-    static int screenSize = 640;
-    static private float pxmm = screenSize / 67.f;
+    int screenSize;
+    private float pxmm;
+    float pxToMm;
     int width, height, midScreenPoint;
     float startingPoint = 0;
     float downpoint = 0, movablePoint = 0, downPointClone = 0;
@@ -78,7 +79,7 @@ public class ScaleView extends View {
         width = w;
         height = h;
         screenSize = height;
-        pxmm = screenSize / 67.f;
+        pxmm = screenSize / pxToMm;
         midScreenPoint = height / 2;
         endPoint = width - 40;
         if (isSizeChanged) {
@@ -95,10 +96,12 @@ public class ScaleView extends View {
                 break;
             }
             startingPoint = startingPoint + pxmm;
-            int size = (i % 10 == 0) ? scaleLineLarge : (i % 5 == 0) ? scaleLineMedium : scaleLineSmall;
+            int size = (i % 10 == 0) ? scaleLineLarge : (i % 5 == 0) ? scaleLineMedium :
+                    scaleLineSmall;
             canvas.drawLine(endPoint - size, startingPoint, endPoint, startingPoint, scaleSpec);
             if (i % 10 == 0) {
-                canvas.drawText((i / 10) + " cm", endPoint - textStartPoint, startingPoint + 8, scaleTextSpec);
+                canvas.drawText((i / 10) + " cm", endPoint - textStartPoint, startingPoint + 8,
+                        scaleTextSpec);
             }
         }
     }
@@ -109,7 +112,6 @@ public class ScaleView extends View {
         if (mainPoint < 0) {
             mainPointClone = -mainPoint;
         }
-        float clickPoint = ((mainPointClone) / (pxmm * 10));
         if (mListener != null) {
             mListener.onViewUpdate((mainPointClone) / (pxmm * 10));
         }
@@ -163,7 +165,10 @@ public class ScaleView extends View {
         return true;
     }
 
-    public void setStartingPoint(float point) {
+    public void setStartingPoint(float point, int height, float mmHeight) {
+        screenSize = height;
+        pxToMm = mmHeight;
+        pxmm = height / mmHeight;
         userStartingPoint = point;
         isSizeChanged = true;
         if (isFirstTime) {

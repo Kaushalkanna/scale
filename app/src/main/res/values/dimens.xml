@@ -9,6 +9,6 @@
     <dimen name="scale_line_large">50dp</dimen>
 
     <dimen name="txt_size">32dp</dimen>
-    <dimen name="text_start_point">120dp</dimen>
+    <dimen name="text_start_point">140dp</dimen>
 
 </resources>

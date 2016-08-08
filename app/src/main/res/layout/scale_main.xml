@@ -15,7 +15,8 @@
         android:layout_gravity="bottom"
         android:layout_weight="5.15"
         android:textSize="40sp"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        android:text="0.0 cm" />
 
     <com.kaushal.scale.ScaleView
         android:id="@+id/scale"
